@@ -33,6 +33,7 @@ public class BaseballGame {
         String intputNum = Console.readLine();
         makeUserNumber(intputNum);
         checkUserInput();
+        compareNumbers();
 
     }
     public ArrayList<Integer> makeUserNumber(String inNum){
@@ -56,5 +57,23 @@ public class BaseballGame {
         }
 
     }
+
+    public void compareNumbers(){
+        this.ball = 0;
+        this.strike = 0;
+        for(int i = 0; i<userNumber.size(); i++){
+            if(comNumber.indexOf(userNumber.get(i))==i){
+                strike++;
+                continue;
+            }
+            if(comNumber.contains(userNumber.get(i))){
+                ball++;
+            }
+
+        }
+
+    }
+
+
 
 }
