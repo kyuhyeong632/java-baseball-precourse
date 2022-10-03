@@ -2,6 +2,7 @@ package baseball;
 
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
+import org.mockito.internal.creation.SuspendMethod;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,29 +20,42 @@ public class BaseballGame {
     private int strike = 0;
 
 
-    public ArrayList<Integer> baseballNumber(){
-        while (comNumber.size() < MAX_SIZE){
-            comNumber.add(Randoms.pickNumberInRange(START_NUM, END_NUM));
-        }
+    public BaseballGame(){
+        baseballNumber();
+    }
 
-        return comNumber;
+    public void baseballNumber(){
+        comNumber = new ArrayList<>();
+        for(int i = 0; i<3; i++){
+            int num = Randoms.pickNumberInRange(START_NUM, END_NUM);
+            if(!comNumber.contains(num)){
+                comNumber.add(num);
+            }
+        }
+        for(int i = 0; i<comNumber.size(); i++){
+            System.out.print(comNumber.get(i));
+
+        }
 
     }
 
     public void userInputNumber(){
         System.out.println("숫자를 입력해 주세요");
         String intputNum = Console.readLine();
-        makeUserNumber(intputNum);
+        this.userNumber = makeUserNumber(intputNum);
         checkUserInput();
         compareNumbers();
+        System.out.println(compareResult());
 
     }
     public ArrayList<Integer> makeUserNumber(String inNum){
         String[] inArr = inNum.split("");
+        ArrayList<Integer> uNum = new ArrayList<>();
+        uNum = new ArrayList<>();
         for(int i = 0; i<inArr.length; i++){
-            userNumber.add(Integer.parseInt(inArr[i]));
+            uNum.add(Integer.parseInt(inArr[i]));
         }
-        return userNumber;
+        return uNum;
     }
 
     public void checkUserInput(){
@@ -71,6 +85,39 @@ public class BaseballGame {
             }
 
         }
+    }
+
+    public String compareResult(){
+        System.out.println();
+        if(ball != 0 && strike != 0){
+            return (ball + "볼 "+strike+"스트라이크");
+        }
+        if(ball != 0 && strike == 0){
+            return (ball + "볼");
+        }
+        if(ball == 0 && strike != 0){
+            return (strike + "스트라이크");
+        }
+
+        return "낫싱";
+    }
+
+    public boolean endCheck(){
+        if(strike == 3){
+           System.out.println("3개의 숫자를 모두 맞히셨습니다. 게임 종료");
+           System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+           String input = Console.readLine();
+           if(input.equals("1")){
+               baseballNumber();
+               return true;
+           }
+           if(input.equals("2")){
+               return false;
+           }
+           throw new IllegalArgumentException("1또는 2를 입력해주세요.");
+        }
+
+        return true;
 
     }
 
